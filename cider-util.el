@@ -87,6 +87,10 @@ If BUFFER is provided act on that buffer instead."
   (with-current-buffer (or buffer (current-buffer))
     (or (derived-mode-p 'clojurec-mode) (derived-mode-p 'clojurex-mode))))
 
+(defun cider--cljc-or-cljx-file-p (file-name)
+  "Return true if FILE-NAME is for a cljc or cljx file."
+  (string-match "\\.clj\\(x\\|c\\)\\'" file-name))
+
 
 ;;; Thing at point
 (defun cider-defun-at-point ()
