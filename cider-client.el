@@ -209,20 +209,20 @@ from the file extension."
       (cond
        ((cider--in-connection-buffer-p) (current-buffer))
        ((= 1 (length cider-connections)) (car cider-connections))
-       (t (let ((repls (cider-find-connection-buffer-for-project-directory
-                        nil :all-connections)))
-            (if (= 1 (length repls))
+       (t (let ((project-connections
+                 (cider-find-connection-buffer-for-project-directory
+                  nil :all-connections)))
+            (if (= 1 (length project-connections))
                 ;; Only one match, just return it.
-                (car repls)
+                (car project-connections)
               ;; OW, find one matching the extension of current file.
               (let ((type (or type (file-name-extension (or (buffer-file-name) "")))))
                 (or (seq-find (lambda (conn)
                                 (equal (with-current-buffer conn
                                          (or cider-repl-type "clj"))
                                        type))
-                              (append repls cider-connections))
-                    (car repls)
-                    (car cider-connections)))))))
+                              project-connections)
+                    (car project-connections)))))))
     ;; TODO: Add logic to dispatch to a matching Clojure/ClojureScript REPL based on file type
     (car cider-connections)))
 
